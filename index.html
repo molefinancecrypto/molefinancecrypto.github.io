@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>RFD ICO</title>
+	<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+  </head>
+  <body>
+
+<div class="container py-3">
+  <header>
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <span class="fs-4">ICO Purchase</span>
+      </a>
+
+      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 text-dark text-decoration-none" href="#">ICO</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Airdrop</a>
+        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Token</a>
+	<button id="enableEthereumButton" type="button" class="me-3 py-2 w-100 btn btn-lg btn-primary">Connect</button>
+      </nav>
+    </div>
+
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal">Offering</h1>
+      <p class="fs-5 text-muted">We are offering early investors the chance to buy RFD Coin tokens at a large discount.</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center">
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Guppy</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">10<small class="text-muted fw-light">MATIC</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Get your feet wet</li>
+            </ul>
+            <button id="buyMATIC1" type="button" class="w-100 btn btn-lg btn-primary">Buy 10 MATIC</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm">
+          <div class="card-header py-3">
+            <h4 class="my-0 fw-normal">Shark</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">50<small class="text-muted fw-light">MATIC</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Medium sized investment</li>
+            </ul>
+            <button id="buyMATIC2" type="button" class="w-100 btn btn-lg btn-primary">Buy 50 MATIC</button>
+          </div>
+        </div>
+      </div>
+      <div class="col">
+        <div class="card mb-4 rounded-3 shadow-sm border-primary">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="my-0 fw-normal">Whale</h4>
+          </div>
+          <div class="card-body">
+            <h1 class="card-title pricing-card-title">250<small class="text-muted fw-light">MATIC</small></h1>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Moonshot potential</li>
+            </ul>
+            <button id="buyMATIC3" type="button" class="w-100 btn btn-lg btn-primary">Buy 250 MATIC</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+	<div id="resultArea"></div>
+
+    <h2 class="display-6 text-center mb-4">Token details</h2>
+	<dl class="row">
+  <dt class="col-sm-3">Ticker</dt>
+  <dd class="col-sm-9">RFD</dd>
+
+  <dt class="col-sm-3">Token Type</dt>
+  <dd class="col-sm-9">ERC-20</dd>
+
+  <dt class="col-sm-3">ICO Price</dt>
+  <dd class="col-sm-9">1,000,000 RFD = 1 MATIC</dd>
+
+  <dt class="col-sm-3 text-truncate">Total tokens</dt>
+  <dd class="col-sm-9">1,000,000,000,000,000</dd>
+
+  <dt class="col-sm-3">Contract Address</dt>
+  <dd class="col-sm-9"><a target=_blank href="https://explorer-mainnet.maticvigil.com/address/0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb">0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb</a></dd>
+
+  <dt class="col-sm-3">Whitelist Date</dt>
+  <dd class="col-sm-9">June 1st - June 5th, 2021</dd>
+</dl>
+    </div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">New Transaction</strong>
+      <small>1 min ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toastBody">
+	body.
+    </div>
+  </div>
+</div>
+
+
+  </main>
+
+  <footer class="pt-4 my-md-5 pt-md-5 border-top">
+    <div class="row">
+      <div class="col-12 col-md">
+        <!--img class="mb-2" src="/docs/5.0/assets/brand/bootstrap-logo.svg" alt="" width="24" height="19"-->
+        <small class="d-block mb-3 text-muted">&copy; 2021</small>
+      </div>
+      <div class="col-6 col-md">
+        <h5>Features</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Some link</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>Other</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Resource Link</a></li>
+        </ul>
+      </div>
+      <div class="col-6 col-md">
+        <h5>About</h5>
+        <ul class="list-unstyled text-small">
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Team</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Blah</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Blah</a></li>
+          <li class="mb-1"><a class="link-secondary text-decoration-none" href="#">Blah</a></li>
+        </ul>
+      </div>
+    </div>
+  </footer>
+</div>
+
+  </body>
+
+    <script>
+	var theABI = [
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "initialized",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "isActive",
+		"outputs": [
+			{
+				"name": "",
+				"type": "bool"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "RATE",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "initialize",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "destroy",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "owner",
+		"outputs": [
+			{
+				"name": "",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "START",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "raisedAmount",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [],
+		"name": "buyTokens",
+		"outputs": [],
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [],
+		"name": "END",
+		"outputs": [
+			{
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"name": "newOwner",
+				"type": "address"
+			}
+		],
+		"name": "transferOwnership",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"inputs": [
+			{
+				"name": "_tokenAddr",
+				"type": "address"
+			}
+		],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "constructor"
+	},
+	{
+		"payable": true,
+		"stateMutability": "payable",
+		"type": "fallback"
+	},
+	{
+		"anonymous": false,
+		"inputs": [
+			{
+				"indexed": true,
+				"name": "to",
+				"type": "address"
+			},
+			{
+				"indexed": false,
+				"name": "value",
+				"type": "uint256"
+			}
+		],
+		"name": "BoughtTokens",
+		"type": "event"
+	}
+];
+	const ethereumButton = document.getElementById('enableEthereumButton');
+	//const buyButton = document.querySelector('.buyButton');
+	const buyArea = document.getElementById("buyArea");
+	const resultArea = document.getElementById("resultArea");
+	var connectedToMM = false;
+	var toasty = null;
+
+	var contract;
+
+	ethereumButton.addEventListener('click', () => {
+		getAccount();
+		startApp();
+	});
+
+	const buyMATIC1 = document.getElementById("buyMATIC1");
+	buyMATIC1.addEventListener('click', () => {
+		buy(10);
+	});
+
+	const buyMATIC2 = document.getElementById("buyMATIC2");
+	buyMATIC2.addEventListener('click', () => {
+		buy(50);
+	});
+
+	const buyMATIC3 = document.getElementById("buyMATIC3");
+	buyMATIC3.addEventListener('click', () => {
+		buy(250);
+	});
+
+	function buy(amount)
+	{
+		if (!connectedToMM)
+		{
+			alert("Please connect to your wallet provider first");
+			return;
+		}
+
+		var res = buyTokens(amount).then(function(receipt) {
+			console.log(receipt);
+			resultArea.innerHTML = "Transaction Hash: <a target=\"_blank\" href=\"https://explorer-mainnet.maticvigil.com/tx/"+receipt.transactionHash+"/token-transfers\">" + receipt.transactionHash + "</a> transactionIndex: " + receipt.transactionIndex + " status: " + receipt.status;
+			document.getElementById("toastBody").innerHTML = "Trans: <a target=\"_blank\" href=\"https://explorer-mainnet.maticvigil.com/tx/"+receipt.transactionHash+"/token-transfers\">" + receipt.transactionHash + "</a>";
+			toasty.show();
+		});
+	}
+
+	async function getAccount() {
+	  const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+	  const account = accounts[0];
+	  if (ethereum.networkVersion != null && ethereum.networkVersion != 137)
+	  {
+		alert("Please connect to the Matic/Polygon network to use this page");
+		return;
+          }
+
+
+	  ethereumButton.classList.add("btn-outline-primary");
+	  ethereumButton.classList.remove("btn-primary");
+	  ethereumButton.innerText = account.substring(0,4).concat("...").concat(account.substring(account.length-4));
+	  connectedToMM = true;
+	}
+
+	function startApp() {
+           var addr = "0xB29eBBe4e568f4e7F5288dF7Ae09810A61a28F07";
+           //contract = new web3js.eth.Contract(theABI,addr);
+           contract = new web3.eth.Contract(theABI,addr);
+      	}
+
+      	function buyTokens(MATICAmount) {
+		console.log("BUYTokens");
+		console.dir(contract.methods);
+		 // value in wei
+
+		//var MATICAmount = document.getElementById("MATICAmount");
+		//let amtValue = web3.utils.toWei(MATICAmount.value);
+		let amtValue = web3.utils.toWei(MATICAmount+"");
+
+		console.log("amtValue : " + amtValue + " from: " + MATICAmount.value);
+	        resultArea.innerHTML = "Sending transaction...";
+		return contract.methods.buyTokens().send({from:ethereum.selectedAddress, value: amtValue});
+      	}
+
+	window.addEventListener('load', function() {
+
+	if (typeof web3 !== 'undefined') {
+        	  //web3js = new Web3(web3.currentProvider);
+		  web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+
+			console.log("Web3 configured");
+	} else {
+		console.log("No web3.");
+        }
+
+
+	if (window.ethereum)
+	{
+		   // App.web3 = new Web3(window.ethereum);
+		    // detect Metamask account change
+		window.ethereum.on('accountsChanged', function (accounts) {
+		      console.log('accountsChanges',accounts);
+	    	});
+
+		 // detect Network account change
+		    window.ethereum.on('networkChanged', function(networkId){
+		      console.log('networkChanged',networkId);
+		    });
+	}
+
+	var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+	var toastList = toastElList.map(function (toastEl) {
+		const option = {animation: true};
+		toasty = new bootstrap.Toast(toastEl, option);
+	return toasty;
+	});
+
+
+
+      });
+
+	console.log("ethereum.networkVersion:"+ethereum.networkVersion);
+	console.log("ethereum.selectedAddress:"+ethereum.selectedAddress);
+</script>
+</html>
