@@ -4,9 +4,9 @@
 }
 
 .bg-primary {
-  background-color: #cc0000;
+  background-color: #cc0000 !important;
 }
 
 .border-primary {
-  border-color: #cc0000;
+  border-color: #cc0000 !important;
 }
