@@ -10,3 +10,9 @@
 .border-primary {
   border-color: #cc0000 !important;
 }
+
+.btn-primary:hover {
+    color: #fff;
+    background-color: #e30606;
+    border-color: #e30606;
+}
