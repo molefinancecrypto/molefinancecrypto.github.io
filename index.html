@@ -313,7 +313,7 @@
 
 	ethereumButton.addEventListener('click', () => {
 		getAccount();
-		startApp();
+		//startApp();
 	});
 
 	const buyMATIC1 = document.getElementById("buyMATIC1");
@@ -398,6 +398,7 @@
 		  web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 			console.log("Web3 configured");
+			startApp();
 	} else {
 		console.log("No web3.");
         }
