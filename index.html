@@ -101,6 +101,11 @@
   <dt class="col-sm-3">Whitelist Date</dt>
   <dd class="col-sm-9">June 1st - June 5th, 2021</dd>
 </dl>
+	  
+	<h2 class="display-6 text-center mb-4">Stats</h2>
+        <div id="presale" class="alert alert-success d-none" role="alert">
+        </div>
+ 
     </div>
 
 <div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
@@ -362,6 +367,14 @@
            var addr = "0xB29eBBe4e568f4e7F5288dF7Ae09810A61a28F07";
            //contract = new web3js.eth.Contract(theABI,addr);
            contract = new web3.eth.Contract(theABI,addr);
+		
+	   contract.methods.raisedAmount().call(function(err, res) {
+		let raisedAmount = web3.utils.fromWei(res);
+
+                var presaleArea = document.getElementById("presale");
+                presaleArea.innerHTML = "Raised " + raisedAmount + " MATIC!";
+                presaleArea.classList.remove("d-none");
+           });		
       	}
 
       	function buyTokens(MATICAmount) {
