@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <title>RFD ICO</title>
+	<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
+	<link rel="stylesheet" type="text/css" href="theme.css" media="screen"/>
+  </head>
+  <body>
+
+<div class="container py-3">
+  <header>
+    <div class="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
+      <a href="/" class="d-flex align-items-center text-dark text-decoration-none">
+        <span class="fs-4">Farming</span>
+      </a>
+
+      <nav class="d-inline-flex mt-2 mt-md-0 ms-md-auto">
+        <a class="me-3 py-2 text-dark text-decoration-none" href="#">Farms</a>
+        <!--a class="me-3 py-2 text-dark text-decoration-none" href="#">Airdrop</a-->
+        <!--a class="me-3 py-2 text-dark text-decoration-none" href="#">Token</a-->
+	<button id="addTokenButton" type="button" class="me-3 py-2 w-100 btn btn-lg btn-primary">+ Token</button>
+	<button id="enableEthereumButton" type="button" class="me-3 py-2 w-100 btn btn-lg btn-primary">Connect</button>
+      </nav>
+    </div>
+
+    <div class="pricing-header p-3 pb-md-4 mx-auto text-center">
+      <h1 class="display-4 fw-normal">Yield Farming</h1>
+      <p class="fs-5 text-muted">Farming brings revenue!</p>
+    </div>
+  </header>
+
+  <main>
+    <div class="row row-cols-1 row-cols-md-3 mb-3 text-center" id="poolcontainer">
+
+      <div class="col pool pool-0">
+        <div class="card mb-4 rounded-3 shadow-sm border-primary" id="pool-1">
+          <div class="card-header py-3 text-white bg-primary border-primary">
+            <h4 class="poolTitle my-0 fw-normal">Farm #2 (USDC) <span class="badge bg-secondary">5x</span></h4>
+          </div>
+          <div class="card-body">
+		<!--div class="spinner-border text-danger" role="status">
+		  <span class="visually-hidden">Loading...</span>
+		</div-->
+		<h1 class="card-title pricing-card-title">APR <small class="apr text-muted fw-light">123%</small></h1>
+		<h2 class="card-title pricing-card-title">Earn <small class="earnToken text-muted fw-light">MAPLE</small></h2>
+		<h3 class="card-title pricing-card-title">Deposit Fee <small class="depositFee text-muted fw-light">3%</small></h3>
+            <ul class="list-unstyled mt-3 mb-4">
+              <li>Tokens Earned: <small class="tokensearned">12345</small></li>
+	      <li>Tokens Staked: <small class="tokensstaked">9876</small></li>
+            </ul>
+            <button id="approveContract2" type="button" class="w-100 btn btn-lg btn-primary" disabled>Approve Contract</button>
+ <div class="card-footer">
+        please connect wallet
+  </div>
+
+	<form class="card p-2">
+          <div class="input-group">
+            <input type="text" class="form-control" placeholder="Amount to stake">
+            <button type="submit" class="btn btn-secondary">Max</button>
+            <button type="submit" class="btn btn-primary">Stake</button>
+          </div>
+        </form>
+
+          </div>
+        </div>
+      </div>
+
+
+  </main>
+</div>
+
+<div class="container">
+	<div id="resultArea"></div>
+    <h2 class="display-6 text-center mb-4">Token Stats</h2>
+	<dl class="row">
+  <dt class="col-sm-3 text-truncate">Total Supply</dt>
+  <dd class="col-sm-9">100,000,000,000</dd>
+
+  <dt class="col-sm-3">Burned</dt>
+  <dd class="col-sm-9">1,000</dd>
+
+  <dt class="col-sm-3">Total Value Locked (TVL)</dt>
+  <dd class="col-sm-9">$100</dd>
+
+  <dt class="col-sm-3">Market Cap</dt>
+  <dd class="col-sm-9">$123</dd>
+</dl>
+    </div>
+
+<div class="position-fixed bottom-0 end-0 p-3" style="z-index: 5">
+  <div id="liveToast" class="toast hide" role="alert" aria-live="assertive" aria-atomic="true">
+    <div class="toast-header">
+      <strong class="me-auto">New Transaction</strong>
+      <small>1 min ago</small>
+      <button type="button" class="btn-close" data-bs-dismiss="toast" aria-label="Close"></button>
+    </div>
+    <div class="toast-body" id="toastBody">
+	body.
+    </div>
+  </div>
+</div>
+
+</div>
+
+  </body>
+
+    <script>
+
+	//const App = await init_ethers();
+	const MAPLE_CHEF_ABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_token","internalType":"contract PolyMaple"},{"type":"uint256","name":"_startBlock","internalType":"uint256"},{"type":"uint256","name":"_tokenPerBlock","internalType":"uint256"},{"type":"uint256","name":"_startHarvestBlock","internalType":"uint256"}]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"EmergencyWithdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"EmissionRateUpdated","inputs":[{"type":"address","name":"caller","internalType":"address","indexed":true},{"type":"uint256","name":"previousAmount","internalType":"uint256","indexed":false},{"type":"uint256","name":"newAmount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OperatorshipTransferred","inputs":[{"type":"address","name":"previousOperator","internalType":"address","indexed":true},{"type":"address","name":"newOperator","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"RewardLockedUp","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amountLockedUp","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"BONUS_MULTIPLIER","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MAXIMUM_HARVEST_INTERVAL","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"add","inputs":[{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"address","name":"_lpToken","internalType":"contract IBEP20"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"_harvestInterval","internalType":"uint256"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"canHarvest","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"address","name":"_user","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"devAddress","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"emergencyWithdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"feeAddress","inputs":[]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"getMultiplier","inputs":[{"type":"uint256","name":"_from","internalType":"uint256"},{"type":"uint256","name":"_to","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"massUpdatePools","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"operator","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"pendingToken","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"address","name":"_user","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"lpToken","internalType":"contract IBEP20"},{"type":"uint256","name":"allocPoint","internalType":"uint256"},{"type":"uint256","name":"lastRewardBlock","internalType":"uint256"},{"type":"uint256","name":"accTokenPerShare","internalType":"uint256"},{"type":"uint16","name":"depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"harvestInterval","internalType":"uint256"}],"name":"poolInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"poolLength","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"set","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"_harvestInterval","internalType":"uint256"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setDevAddress","inputs":[{"type":"address","name":"_devAddress","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFeeAddress","inputs":[{"type":"address","name":"_feeAddress","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"startBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"startHarvestBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract PolyMaple"}],"name":"token","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"tokenPerBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalAllocPoint","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalLockedUpRewards","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOperatorship","inputs":[{"type":"address","name":"newOperator","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateEmissionRate","inputs":[{"type":"uint256","name":"_tokenPerBlock","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updatePool","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"rewardDebt","internalType":"uint256"},{"type":"uint256","name":"rewardLockedUp","internalType":"uint256"},{"type":"uint256","name":"nextHarvestUntil","internalType":"uint256"}],"name":"userInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]}];
+	const MAPLE_CHEF_ADDR = "0xa1a691f0616F7eb84671Ff67A48cF1eB5E74fa41";
+	const rewardTokenTicker = "MAPLE";
+
+	/*const MAPLE_CHEF = new ethers.Contract(MAPLE_CHEF_ADDR, MAPLE_CHEF_ABI, App.provider);
+	const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
+	const poolCount = parseInt(await chefContract.poolLength(), 10);
+	error_log(`Found ${poolCount} pools.`);
+	const totalAllocPoints = await chefContract.totalAllocPoint();
+	error_log(`Found ${totalAllocPoints} totalAllocPoints.`);*/
+	//const rewardsPerWeek = rewardsPerWeekFixed ??  await chefContract.callStatic[rewardsPerBlockFunction]()  / 10 ** rewardToken.decimals * 604800 / 3
+	//const poolInfos = await Promise.all([...Array(poolCount).keys()].map(async (x) => await getMaticPoolInfo(App, chefContract, chefAddress, x, pendingRewardsFunction)));
+	//var tokenAddresses = [].concat.apply([], poolInfos.filter(x => x.poolToken).map(x => x.poolToken.tokens));
+	/*await Promise.all(tokenAddresses.map(async (address) => {
+      		tokens[address] = await getMaticToken(App, address, chefAddress);
+	}));*/
+	//https://api.coingecko.com/api/v3/simple/price?ids=wmatic%2Cmatic%2Ctether%2Cbitcoin%2Cethereum%2Cusd-coin%2Cdai%2Cquick%2Cstake-dao%2Cyield-app%2Caave%2Cpolywhale%2Cchainlink%2Csushi%2Cdfyn-network%2Cpolydoge&vs_currencies=usd
+
+	//const rewardsPerWeek = await MAPLE_CHEF.tokenPerBlock() /1e18 * 604800 / 2.1; // every 7 days / block rate 1 every 2.1 seconds
+	//const prices = await getMaticPrices();
+	//await loadMaticChefContract(App, tokens, prices, MAPLE_CHEF, MAPLE_CHEF_ADDR, MAPLE_CHEF_ABI, rewardTokenTicker, "token", null, rewardsPerWeek, "pendingToken");
+
+const maticTokens = [
+  { "id": "maple","symbol": "MAPLE","contract": "0x67F0e196fF54A624E4063fa3619D483Be336d5DB" },
+  { "id": "wmatic","symbol": "WMATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
+  { "id": "matic","symbol": "MATIC","contract": "0x0d500B1d8E8eF31E21C99d1Db9A6444d3ADf1270" },
+  { "id": "tether","symbol": "USDT", "contract": "0xc2132D05D31c914a87C6611C10748AEb04B58e8F" },
+  { "id": "bitcoin","symbol": "WBTC", "contract": "0x1BFD67037B42Cf73acF2047067bd4F2C47D9BfD6" },
+  { "id": "ethereum", "symbol": "WETH", "contract": "0x7ceB23fD6bC0adD59E62ac25578270cFf1b9f619" },
+  { "id": "usd-coin","symbol": "USDC", "contract": "0x2791Bca1f2de4661ED88A30C99A7a9449Aa84174" },
+  { "id": "dai","symbol": "DAI", "contract": "0x8f3Cf7ad23Cd3CaDbD9735AFf958023239c6A063" },
+  { "id": "quick","symbol": "QUICK", "contract": "0x831753DD7087CaC61aB5644b308642cc1c33Dc13" },
+  { "id": "stake-dao", "symbol": "SDT", "contract": "0x361A5a4993493cE00f61C32d4EcCA5512b82CE90" },
+  { "id": "yield-app", "symbol": "YLD", "contract": "0x4CEBdBCB286101A17D3eA1f7fe7bbDeD2B2053dd" },
+  { "id": "aave", "symbol": "AAVE", "contract": "0xD6DF932A45C0f255f85145f286eA0b292B21C90B" },
+  { "id": "polywhale", "symbol": "KRILL", "contract": "0x05089C9EBFFa4F0AcA269e32056b1b36B37ED71b" },
+  { "id": "chainlink", "symbol": "LINK", "contract": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39" },
+  { "id": "sushi", "symbol": "SUSHI", "contract": "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a" },
+  { "id": "dfyn-network", "symbol": "DFYN", "contract": "0xC168E40227E4ebD8C1caE80F7a55a4F0e6D66C97" },
+  { "id": "polydoge", "symbol": "POLYDOGE", "contract": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472" }
+];
+
+
+
+	const ethereumButton = document.getElementById('enableEthereumButton');
+	const addTokenButton = document.getElementById('addTokenButton');
+
+	//const buyButton = document.querySelector('.buyButton');
+	const buyArea = document.getElementById("buyArea");
+	const resultArea = document.getElementById("resultArea");
+	var connectedToMM = false;
+	var toasty = null;
+
+	var masterChefContract;
+	var tokenContract;
+
+	ethereumButton.addEventListener('click', () => {
+		getAccount();
+		startApp();
+	});
+
+	addTokenButton.addEventListener('click', () => {
+		addCustomToken();
+	});
+
+	/*
+	const approveContract1 = document.getElementById("approveContract1");
+	approveContract1.addEventListener('click', () => {
+		buy(10);
+	});
+
+	const approveContract2 = document.getElementById("approveContract2");
+	if (approveContract2)
+	{
+		approveContract2.addEventListener('click', () => {
+			buy(50);
+		});
+	}
+
+	const approveContract3 = document.getElementById("approveContract3");
+	approveContract3.addEventListener('click', () => {
+		buy(250);
+	});
+	*/
+
+
+async function addCustomToken() {
+	const tokenAddress = '0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb';
+	const tokenSymbol = 'RFD';
+	const tokenDecimals = 9;
+	const tokenImage = 'https://rfd.deals/assets/RFD.png';
+
+	try {
+	  // wasAdded is a boolean. Like any RPC method, an error may be thrown.
+	  const wasAdded = await ethereum.request({
+	    method: 'wallet_watchAsset',
+	    params: {
+	      type: 'ERC20', // Initially only supports ERC20, but eventually more!
+	      options: {
+	        address: tokenAddress, // The address that the token is at.
+	        symbol: tokenSymbol, // A ticker symbol or shorthand, up to 5 chars.
+        	decimals: tokenDecimals, // The number of decimals in the token
+	        image: tokenImage, // A string url of the token logo
+	      },
+	    },
+	  });
+
+	  if (wasAdded) {
+	    console.log('Thanks for your interest!');
+	  } else {
+	    console.log('Your loss!');
+	  }
+	} catch (error) {
+	  console.log(error);
+	}
+}
+
+	function buy(amount)
+	{
+		if (!connectedToMM)
+		{
+			alert("Please connect to your wallet provider first");
+			return;
+		}
+
+		var res = buyTokens(amount).then(function(receipt) {
+			console.log(receipt);
+			resultArea.innerHTML = "Transaction Hash: <a target=\"_blank\" href=\"https://explorer-mainnet.maticvigil.com/tx/"+receipt.transactionHash+"/token-transfers\">" + receipt.transactionHash + "</a> transactionIndex: " + receipt.transactionIndex + " status: " + receipt.status;
+			document.getElementById("toastBody").innerHTML = "Trans: <a target=\"_blank\" href=\"https://explorer-mainnet.maticvigil.com/tx/"+receipt.transactionHash+"/token-transfers\">" + receipt.transactionHash + "</a>";
+			toasty.show();
+		});
+	}
+
+	async function getAccount() {
+	  const accounts = await ethereum.request({ method: 'eth_requestAccounts' });
+	  const account = accounts[0];
+	  if (ethereum.networkVersion != null && ethereum.networkVersion != 137)
+	  {
+		alert("Please connect to the Matic/Polygon network to use this page");
+		return;
+          }
+
+
+	  ethereumButton.classList.add("btn-outline-primary");
+	  ethereumButton.classList.remove("btn-primary");
+	  ethereumButton.innerText = account.substring(0,4).concat("...").concat(account.substring(account.length-4));
+	  connectedToMM = true;
+	  //console.log(getBalance(account));
+
+	  // Call balanceOf function
+	  /*tokenContract.methods.balanceOf(account, (error, balance) => {
+		  // Get decimals
+		  tokenContract.decimals((error, decimals) => {
+		   // calculate a balance
+		    balance = balance.div(10**decimals);
+		    console.log(balance.toString());
+		  });
+		});
+		*/
+	}
+
+	function startApp() {
+           masterChefContract = new web3.eth.Contract(MAPLE_CHEF_ABI,MAPLE_CHEF_ADDR);
+	   setupPools();
+	   //var tokenContractAddr = "0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb";
+	   //tokenContract = new web3.eth.Contract(tokenABI,tokenContractAddr);
+      	}
+
+	async function setupPools()
+	{
+	   const poolCount = parseInt(await masterChefContract.methods.poolLength().call(), 10);
+
+	   const poolContainer = document.getElementById("poolcontainer");
+	   const pool1 = poolContainer.getElementsByClassName("pool")[0];
+	   console.log("pool count: " + poolCount);
+	   for (i = 0; i < poolCount; i++)
+	   {
+		if (i > 0)
+			injectNewPool(i,poolContainer,pool1);
+
+	   	updatePoolInfo(i);
+           }
+	}
+
+
+	function injectNewPool(id,poolContainer,pool)
+	{
+		var newPool = pool.cloneNode(true);
+		newPool.classList.remove("pool-0");
+		newPool.classList.add("pool-"+id);
+		poolContainer.appendChild(newPool);
+	}
+
+	async function updatePoolInfo(id)
+	{
+		const poolInfo = await masterChefContract.methods.poolInfo(id).call();
+		//const poolArea = document.getElementById("pool-"+id);
+		const poolArea = document.getElementsByClassName('pool-'+id)[0];
+		if (poolArea)
+		{
+			var depFeeArea = poolArea.getElementsByClassName('depositFee')[0];
+			depFeeArea.innerHTML = poolInfo.depositFeeBP/100+"%";
+			var poolTitleArea = poolArea.getElementsByClassName('poolTitle')[0];
+			var tokenName = poolInfo.lpToken;
+			token= maticTokens.find( record => record.contract === poolInfo.lpToken)
+			if (token)
+				tokenName = token.symbol;
+
+			poolTitleArea.innerHTML = "Pool "+id+" ("+tokenName+")";
+			var apr = "1234%";
+			aprArea =  poolArea.getElementsByClassName('apr')[0];
+			aprArea.innerHTML = apr;
+		}
+		console.dir(poolInfo);
+	}
+
+	async function getBalance(walletAddress) {
+	  balance = await tokenContract.methods.balanceOf(walletAddress).call();
+	  return balance;
+	}
+
+      	function buyTokens(MATICAmount) {
+		console.log("BUYTokens");
+		console.dir(contract.methods);
+		 // value in wei
+
+		//var MATICAmount = document.getElementById("MATICAmount");
+		//let amtValue = web3.utils.toWei(MATICAmount.value);
+		let amtValue = web3.utils.toWei(MATICAmount+"");
+
+		console.log("amtValue : " + amtValue + " from: " + MATICAmount.value);
+	        resultArea.innerHTML = "Sending transaction...";
+		return contract.methods.buyTokens().send({from:ethereum.selectedAddress, value: amtValue});
+      	}
+
+	window.addEventListener('load', function() {
+
+	if (typeof web3 !== 'undefined') {
+        	  //web3js = new Web3(web3.currentProvider);
+		  web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
+
+			console.log("Web3 configured");
+	} else {
+		console.log("No web3.");
+        }
+
+
+	if (window.ethereum)
+	{
+		   // App.web3 = new Web3(window.ethereum);
+		    // detect Metamask account change
+		window.ethereum.on('accountsChanged', function (accounts) {
+		      console.log('accountsChanges',accounts);
+	    	});
+
+		 // detect Network account change
+		    window.ethereum.on('chainChanged', function(networkId){
+		      console.log('chainChanged',networkId);
+		    });
+	}
+
+	var toastElList = [].slice.call(document.querySelectorAll('.toast'))
+	var toastList = toastElList.map(function (toastEl) {
+		const option = {animation: true};
+		toasty = new bootstrap.Toast(toastEl, option);
+	return toasty;
+	});
+
+
+
+      });
+
+	console.log("ethereum.networkVersion:"+ethereum.networkVersion);
+	console.log("ethereum.selectedAddress:"+ethereum.selectedAddress);
+</script>
+</html>
