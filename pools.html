@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
-    <title>RFD ICO</title>
+    <title>Maple Pools</title>
 	<script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-+0n0xVW2eSR5OomGNYDnhzAbDsOXxcvSN1TPprVMTNDbiYZCxYbOOl7+AMvyTG2x" crossorigin="anonymous">
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-gtEjrD/SeCtmISkJkNUaaKMoLD0//ElJ19smozuHV6z3Iehds+3Ulb9Bn9Plx0x4" crossorigin="anonymous"></script>
@@ -40,32 +40,38 @@
       <div class="col pool pool-0">
         <div class="card mb-4 rounded-3 shadow-sm border-primary" id="pool-1">
           <div class="card-header py-3 text-white bg-primary border-primary">
-            <h4 class="poolTitle my-0 fw-normal">Farm #2 (USDC) <span class="badge bg-secondary">5x</span></h4>
+            <h4 class="my-0 fw-normal"><span class="poolTitle">Pool (?)</span> <span class="badge bg-secondary multiplier">x</span></h4>
           </div>
           <div class="card-body">
-		<!--div class="spinner-border text-danger" role="status">
+
+		<div class="loader">
+		<div class="spinner-border text-danger" role="status">
 		  <span class="visually-hidden">Loading...</span>
-		</div-->
-		<h1 class="card-title pricing-card-title">APR <small class="apr text-muted fw-light">123%</small></h1>
-		<h2 class="card-title pricing-card-title">Earn <small class="earnToken text-muted fw-light">MAPLE</small></h2>
-		<h3 class="card-title pricing-card-title">Deposit Fee <small class="depositFee text-muted fw-light">3%</small></h3>
-            <ul class="list-unstyled mt-3 mb-4">
-              <li>Tokens Earned: <small class="tokensearned">12345</small></li>
-	      <li>Tokens Staked: <small class="tokensstaked">9876</small></li>
-            </ul>
-            <button id="approveContract2" type="button" class="w-100 btn btn-lg btn-primary" disabled>Approve Contract</button>
- <div class="card-footer">
+		</div>
+			Loading...
+		</div>
+
+		<div class="poolinfo d-none">
+			<h1 class="card-title pricing-card-title">APR <small class="apr text-muted fw-light">123%</small></h1>
+			<h2 class="card-title pricing-card-title">Earn <small class="earnToken text-muted fw-light">MAPLE</small></h2>
+			<h3 class="card-title pricing-card-title">Deposit Fee <small class="depositFee text-muted fw-light">3%</small></h3>
+	            <ul class="list-unstyled mt-3 mb-4 tokenstats d-none">
+	              <li>Tokens Earned: <small class="tokensearned">-</small></li>
+		      <li>Tokens Staked: <small class="tokensstaked">-</small></li>
+	            </ul>
+            <button data-action="approve" type="button" class="approve w-100 btn btn-lg btn-primary" disabled>Approve Contract</button>
+ <div class="connectwallet card-footer">
         please connect wallet
   </div>
 
-	<form class="card p-2">
+	<form class="card p-2 stakingform d-none">
           <div class="input-group">
             <input type="text" class="form-control" placeholder="Amount to stake">
-            <button type="submit" class="btn btn-secondary">Max</button>
-            <button type="submit" class="btn btn-primary">Stake</button>
+            <button type="button" data-action="maxstake" class="btn btn-secondary">Max</button>
+            <button type="button" data-action="stake" class="btn btn-primary">Stake</button>
           </div>
         </form>
-
+		</div>
           </div>
         </div>
       </div>
@@ -115,6 +121,7 @@
 	const MAPLE_CHEF_ABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"_token","internalType":"contract PolyMaple"},{"type":"uint256","name":"_startBlock","internalType":"uint256"},{"type":"uint256","name":"_tokenPerBlock","internalType":"uint256"},{"type":"uint256","name":"_startHarvestBlock","internalType":"uint256"}]},{"type":"event","name":"Deposit","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"EmergencyWithdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"EmissionRateUpdated","inputs":[{"type":"address","name":"caller","internalType":"address","indexed":true},{"type":"uint256","name":"previousAmount","internalType":"uint256","indexed":false},{"type":"uint256","name":"newAmount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OperatorshipTransferred","inputs":[{"type":"address","name":"previousOperator","internalType":"address","indexed":true},{"type":"address","name":"newOperator","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"RewardLockedUp","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amountLockedUp","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"Withdraw","inputs":[{"type":"address","name":"user","internalType":"address","indexed":true},{"type":"uint256","name":"pid","internalType":"uint256","indexed":true},{"type":"uint256","name":"amount","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"BONUS_MULTIPLIER","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"MAXIMUM_HARVEST_INTERVAL","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"add","inputs":[{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"address","name":"_lpToken","internalType":"contract IBEP20"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"_harvestInterval","internalType":"uint256"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"canHarvest","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"address","name":"_user","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deposit","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"devAddress","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"emergencyWithdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"feeAddress","inputs":[]},{"type":"function","stateMutability":"pure","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"getMultiplier","inputs":[{"type":"uint256","name":"_from","internalType":"uint256"},{"type":"uint256","name":"_to","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"massUpdatePools","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"operator","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"pendingToken","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"address","name":"_user","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"lpToken","internalType":"contract IBEP20"},{"type":"uint256","name":"allocPoint","internalType":"uint256"},{"type":"uint256","name":"lastRewardBlock","internalType":"uint256"},{"type":"uint256","name":"accTokenPerShare","internalType":"uint256"},{"type":"uint16","name":"depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"harvestInterval","internalType":"uint256"}],"name":"poolInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"poolLength","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"set","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_allocPoint","internalType":"uint256"},{"type":"uint16","name":"_depositFeeBP","internalType":"uint16"},{"type":"uint256","name":"_harvestInterval","internalType":"uint256"},{"type":"bool","name":"_withUpdate","internalType":"bool"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setDevAddress","inputs":[{"type":"address","name":"_devAddress","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setFeeAddress","inputs":[{"type":"address","name":"_feeAddress","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"startBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"startHarvestBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract PolyMaple"}],"name":"token","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"tokenPerBlock","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalAllocPoint","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalLockedUpRewards","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOperatorship","inputs":[{"type":"address","name":"newOperator","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updateEmissionRate","inputs":[{"type":"uint256","name":"_tokenPerBlock","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"updatePool","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"amount","internalType":"uint256"},{"type":"uint256","name":"rewardDebt","internalType":"uint256"},{"type":"uint256","name":"rewardLockedUp","internalType":"uint256"},{"type":"uint256","name":"nextHarvestUntil","internalType":"uint256"}],"name":"userInfo","inputs":[{"type":"uint256","name":"","internalType":"uint256"},{"type":"address","name":"","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"withdraw","inputs":[{"type":"uint256","name":"_pid","internalType":"uint256"},{"type":"uint256","name":"_amount","internalType":"uint256"}]}];
 	const MAPLE_CHEF_ADDR = "0xa1a691f0616F7eb84671Ff67A48cF1eB5E74fa41";
 	const rewardTokenTicker = "MAPLE";
+	var tokenABI = [{"type":"constructor","stateMutability":"nonpayable","inputs":[{"type":"address","name":"ownerAddress","internalType":"address"}]},{"type":"event","name":"Approval","inputs":[{"type":"address","name":"owner","internalType":"address","indexed":true},{"type":"address","name":"spender","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"MinTokensBeforeSwapUpdated","inputs":[{"type":"uint256","name":"minTokensBeforeSwap","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"OwnershipTransferred","inputs":[{"type":"address","name":"previousOwner","internalType":"address","indexed":true},{"type":"address","name":"newOwner","internalType":"address","indexed":true}],"anonymous":false},{"type":"event","name":"SwapAndLiquify","inputs":[{"type":"uint256","name":"tokensSwapped","internalType":"uint256","indexed":false},{"type":"uint256","name":"ethReceived","internalType":"uint256","indexed":false},{"type":"uint256","name":"tokensIntoLiqudity","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"event","name":"SwapAndLiquifyEnabledUpdated","inputs":[{"type":"bool","name":"enabled","internalType":"bool","indexed":false}],"anonymous":false},{"type":"event","name":"Transfer","inputs":[{"type":"address","name":"from","internalType":"address","indexed":true},{"type":"address","name":"to","internalType":"address","indexed":true},{"type":"uint256","name":"value","internalType":"uint256","indexed":false}],"anonymous":false},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"_liquidityFee","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"_maxTxAmount","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"_taxFee","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"allowance","inputs":[{"type":"address","name":"owner","internalType":"address"},{"type":"address","name":"spender","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"approve","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"balanceOf","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint8","name":"","internalType":"uint8"}],"name":"decimals","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"decreaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"subtractedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"deliver","inputs":[{"type":"uint256","name":"tAmount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"enableTrading","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"excludeFromFee","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"excludeFromReward","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"includeInFee","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"includeInReward","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"increaseAllowance","inputs":[{"type":"address","name":"spender","internalType":"address"},{"type":"uint256","name":"addedValue","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isExcludedFromFee","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"isExcludedFromReward","inputs":[{"type":"address","name":"account","internalType":"address"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"name","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"owner","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"address"}],"name":"pancakeswapV2Pair","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"address","name":"","internalType":"contract IUniswapV2Router02"}],"name":"pancakeswapV2Router","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"reflectionFromToken","inputs":[{"type":"uint256","name":"tAmount","internalType":"uint256"},{"type":"bool","name":"deductTransferFee","internalType":"bool"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"renounceOwnership","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setLiquidityFeePercent","inputs":[{"type":"uint256","name":"liquidityFee","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setMaxTxPercent","inputs":[{"type":"uint256","name":"maxTxPercent","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setSwapAndLiquifyEnabled","inputs":[{"type":"bool","name":"_enabled","internalType":"bool"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"setTaxFeePercent","inputs":[{"type":"uint256","name":"taxFee","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"swapAndLiquifyEnabled","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"string","name":"","internalType":"string"}],"name":"symbol","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"tokenFromReflection","inputs":[{"type":"uint256","name":"rAmount","internalType":"uint256"}]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalFees","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"uint256","name":"","internalType":"uint256"}],"name":"totalSupply","inputs":[]},{"type":"function","stateMutability":"view","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"tradingEnabled","inputs":[]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transfer","inputs":[{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[{"type":"bool","name":"","internalType":"bool"}],"name":"transferFrom","inputs":[{"type":"address","name":"sender","internalType":"address"},{"type":"address","name":"recipient","internalType":"address"},{"type":"uint256","name":"amount","internalType":"uint256"}]},{"type":"function","stateMutability":"nonpayable","outputs":[],"name":"transferOwnership","inputs":[{"type":"address","name":"newOwner","internalType":"address"}]},{"type":"receive","stateMutability":"payable"}];
 
 	/*const MAPLE_CHEF = new ethers.Contract(MAPLE_CHEF_ADDR, MAPLE_CHEF_ABI, App.provider);
 	const chefContract = chef ?? new ethers.Contract(chefAddress, chefAbi, App.provider);
@@ -151,7 +158,10 @@ const maticTokens = [
   { "id": "chainlink", "symbol": "LINK", "contract": "0x53E0bca35eC356BD5ddDFebbD1Fc0fD03FaBad39" },
   { "id": "sushi", "symbol": "SUSHI", "contract": "0x0b3F868E0BE5597D5DB7fEB59E1CADBb0fdDa50a" },
   { "id": "dfyn-network", "symbol": "DFYN", "contract": "0xC168E40227E4ebD8C1caE80F7a55a4F0e6D66C97" },
-  { "id": "polydoge", "symbol": "POLYDOGE", "contract": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472" }
+  { "id": "polydoge", "symbol": "POLYDOGE", "contract": "0x8a953cfe442c5e8855cc6c61b1293fa648bae472" },
+  { "id": "wmatic-maple", "symbol": "WMATIC-MAPLE", "contract": "0x7066141479Ec93aE77508D03C3493079aCe8eCBA"},
+  { "id": "usdc-weth", "symbol": "USDC-WETH", "contract": "0x853Ee4b2A13f8a742d64C8F088bE7bA2131f670d"},
+  { "id": "wmatic-usdc", "symbol": "WMATIC-USDC", "contract": "0x6e7a5FAFcec6BB1e78bAE2A1F0B612012BF14827"},
 ];
 
 
@@ -170,33 +180,12 @@ const maticTokens = [
 
 	ethereumButton.addEventListener('click', () => {
 		getAccount();
-		startApp();
+		//startApp();
 	});
 
 	addTokenButton.addEventListener('click', () => {
 		addCustomToken();
 	});
-
-	/*
-	const approveContract1 = document.getElementById("approveContract1");
-	approveContract1.addEventListener('click', () => {
-		buy(10);
-	});
-
-	const approveContract2 = document.getElementById("approveContract2");
-	if (approveContract2)
-	{
-		approveContract2.addEventListener('click', () => {
-			buy(50);
-		});
-	}
-
-	const approveContract3 = document.getElementById("approveContract3");
-	approveContract3.addEventListener('click', () => {
-		buy(250);
-	});
-	*/
-
 
 async function addCustomToken() {
 	const tokenAddress = '0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb';
@@ -259,30 +248,63 @@ async function addCustomToken() {
 	  ethereumButton.classList.remove("btn-primary");
 	  ethereumButton.innerText = account.substring(0,4).concat("...").concat(account.substring(account.length-4));
 	  connectedToMM = true;
-	  //console.log(getBalance(account));
 
-	  // Call balanceOf function
-	  /*tokenContract.methods.balanceOf(account, (error, balance) => {
-		  // Get decimals
-		  tokenContract.decimals((error, decimals) => {
-		   // calculate a balance
-		    balance = balance.div(10**decimals);
-		    console.log(balance.toString());
-		  });
-		});
-		*/
+	  connected(account);
 	}
 
 	function startApp() {
            masterChefContract = new web3.eth.Contract(MAPLE_CHEF_ABI,MAPLE_CHEF_ADDR);
 	   setupPools();
-	   //var tokenContractAddr = "0xF290C8fD15f4eE10A83C35C5083B7B6b8cdB3Bfb";
-	   //tokenContract = new web3.eth.Contract(tokenABI,tokenContractAddr);
       	}
+
+	async function connected(account)
+	{
+		console.log("PC : " + poolCount);
+		for (id = 0; id < poolCount; id++)
+           	{
+			const poolArea = document.getElementsByClassName('pool-'+id)[0];
+			const pendingTokens = await masterChefContract.methods.pendingToken(id,account).call();
+			const userInfo = await masterChefContract.methods.userInfo(id,account).call();
+			let stakedTokens = web3.utils.fromWei(userInfo.amount);
+			//let stakedTokens = userInfo.amount;
+			console.log("stakedTokens:" + stakedTokens);
+			//console.log("pending tokens:",pendingTokens);
+			if (poolArea)
+			{
+				const approveButton = poolArea.getElementsByClassName('approve')[0];
+				approveButton.disabled = false;
+				const connectText = poolArea.getElementsByClassName('connectwallet')[0];
+				connectText.classList.add("d-none");
+
+				const pendingTokenArea = poolArea.getElementsByClassName('tokensearned')[0];
+				pendingTokenArea.innerHTML = pendingTokens+"";
+
+				const stakedTokenArea = poolArea.getElementsByClassName('tokensstaked')[0];
+				stakedTokenArea.innerHTML = stakedTokens+"";
+				const tokenStats = poolArea.getElementsByClassName("tokenstats")[0];
+				tokenStats.classList.remove("d-none");
+
+				const approveBtn = poolArea.getElementsByClassName('approve')[0];
+				const contractAddr = approveBtn.getAttribute("data-contract");
+				console.log("contractAddr: " + contractAddr);
+
+				const stakingForm = poolArea.getElementsByClassName('stakingform')[0];
+
+				checkAllowance(contractAddr,account,MAPLE_CHEF_ADDR).then(function (result) {
+					let allowance = result;
+					if (allowance > 0)
+					{
+						approveBtn.classList.add("d-none");
+						stakingForm.classList.remove("d-none");
+					}
+		                });
+			}
+		}
+	}
 
 	async function setupPools()
 	{
-	   const poolCount = parseInt(await masterChefContract.methods.poolLength().call(), 10);
+	   poolCount = parseInt(await masterChefContract.methods.poolLength().call(), 10);
 
 	   const poolContainer = document.getElementById("poolcontainer");
 	   const pool1 = poolContainer.getElementsByClassName("pool")[0];
@@ -308,6 +330,7 @@ async function addCustomToken() {
 	async function updatePoolInfo(id)
 	{
 		const poolInfo = await masterChefContract.methods.poolInfo(id).call();
+
 		//const poolArea = document.getElementById("pool-"+id);
 		const poolArea = document.getElementsByClassName('pool-'+id)[0];
 		if (poolArea)
@@ -324,8 +347,38 @@ async function addCustomToken() {
 			var apr = "1234%";
 			aprArea =  poolArea.getElementsByClassName('apr')[0];
 			aprArea.innerHTML = apr;
+			var loader = poolArea.getElementsByClassName('loader')[0];
+			loader.classList.add("d-none");
+			var poolInfoArea = poolArea.getElementsByClassName('poolinfo')[0];
+			poolInfoArea.classList.remove("d-none");
+
+			const approveButton = poolArea.getElementsByClassName('approve')[0];
+			approveButton.setAttribute("data-contract",poolInfo.lpToken);
+			approveButton.addEventListener('click',approveContract);
 		}
-		console.dir(poolInfo);
+	}
+
+	function approveContract(event)
+	{
+		const button = event.target;
+		const contr = button.getAttribute("data-contract");
+		console.log("approve contract! : " + contr);
+		const tokenContract = new web3.eth.Contract(tokenABI,contr);
+		console.dir(tokenContract);
+		doApprove(tokenContract,MAPLE_CHEF_ADDR,100000000000000).then(function (result) {
+			console.log("approved",result);
+		});
+	}
+
+	async function checkAllowance(contractAddr,owner,spender) {
+		const tokenContract = new web3.eth.Contract(tokenABI,contractAddr);
+		return await tokenContract.methods.allowance(owner,spender).call();
+	}
+
+	async function doApprove(tokenContract,approveTok,tokens) {
+		console.log("calling approve with : " + approveTok + " and tokens: " + tokens);
+		balance = await tokenContract.methods.approve(approveTok,tokens).send({from:ethereum.selectedAddress});
+		return balance;
 	}
 
 	async function getBalance(walletAddress) {
@@ -354,6 +407,7 @@ async function addCustomToken() {
 		  web3 = new Web3(Web3.givenProvider || "ws://localhost:8545");
 
 			console.log("Web3 configured");
+			startApp();
 	} else {
 		console.log("No web3.");
         }
